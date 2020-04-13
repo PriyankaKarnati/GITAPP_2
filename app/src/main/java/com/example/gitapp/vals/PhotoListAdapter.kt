@@ -3,6 +3,8 @@ package com.example.gitapp.vals
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
+import androidx.databinding.adapters.ViewGroupBindingAdapter
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -30,6 +32,7 @@ class PhotoListAdapter(val onClickListener: OnClickListener) :
             holder.itemView.setOnClickListener {
                 onClickListener.onClick(item)
             }
+
         }
     }
 
@@ -57,6 +60,8 @@ class PhotoListAdapter(val onClickListener: OnClickListener) :
     class OnClickListener(val clickListener: (gitProperty: GitProperty) -> Unit) {
         fun onClick(gitProperty: GitProperty) = clickListener(gitProperty)
     }
+
+
 }
 
 

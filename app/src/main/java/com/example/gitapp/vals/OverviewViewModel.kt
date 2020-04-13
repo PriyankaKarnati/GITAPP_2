@@ -22,8 +22,13 @@ class OverviewViewModel:ViewModel() {
     val navigateToSelected: LiveData<GitProperty>
         get() = _navigateToSelected
 
+    private val _sendList = MutableLiveData<MutableList<GitProperty>>()
+    val sendList :LiveData<MutableList<GitProperty>>
+    get() = _sendList
+
     init{
-        getGitApiResponse()
+        //Log.i("start","started")
+        getGitApiResponse(0)
         Log.i("on Failed","failed")
     }
 
@@ -36,15 +41,24 @@ class OverviewViewModel:ViewModel() {
         _navigateToSelected.value = null
     }
 
-    private fun getGitApiResponse(){
+    fun sendToDetails(gitProperty: GitProperty,list: MutableList<GitProperty>){
+
+    }
+    fun getGitApiResponse( x:Int){
         coroutineScope.launch {
-            var getPropertiesDeferred = GitApi.retrofitService.getPropertiesAsync(0)
+            var getPropertiesDeferred = GitApi.retrofitService.getPropertiesAsync(x)
 
             try {
                 var listResult = getPropertiesDeferred.await()
                 _response.value = "Success : ${listResult.size} git properties retrieved."
                 if (listResult.isNotEmpty()) {
                     _properties.value = listResult
+                    for(i in listResult){
+                        _sendList.value?.add(i)
+                    }
+
+                    Log.i("viewModel","Loaded ${listResult.size}")
+
                 }
             } catch (e: Exception) {
                 _response.value = "Failed: ${e.message}"
@@ -86,4 +100,6 @@ class OverviewViewModel:ViewModel() {
 //        _response.value = response.body()
 //    }
 }
+
+
 
